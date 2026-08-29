@@ -2,84 +2,78 @@ from rich import print
 from rich.panel import Panel
 
 class ControleRemoto:
-    def __init__(self, num_canais = 5, vol_max = 5):
-        self.tv_ligada = False
-        self.canais = range(1, num_canais+1)
-        self.volumes = list(range(1, vol_max+1))
+    canal_min: int = 1
+    canal_max: int = 5
+    volume_min: int = 1
+    volume_max: int = 5
+    def __init__(self, canal = 1, volume = 2):
+        self.canal_atual = canal
+        self.volume_atual = volume
+        self.ligado = False
 
-        self.canal_atual = 1
-        self.vol_atual = 1
-        self.vol_max = vol_max
-        self.num_canais = num_canais
+    def liga_desliga(self):
+        self.ligado = not self.ligado
 
-    def mudar_canal(self, botao):
-        if botao == ">":
-            self.canal_atual += 1
-        elif botao == "<":
-            self.canal_atual -= 1
+    def canal_mais(self):
+        if self.ligado:
+            if self.canal_atual == ControleRemoto.canal_max:
+                self.canal_atual = ControleRemoto.canal_min
+            else:
+                self.canal_atual += 1
 
-        self.canal_atual = self.atualizar(self.canal_atual, self.num_canais)
+    def canal_menos(self):
+        if self.ligado:
+            if self.canal_atual == ControleRemoto.canal_min:
+                self.canal_atual = ControleRemoto.canal_max
+            else:
+                self.canal_atual -= 1
 
-    def atualizar(self, x_atual, xmax):
-        if x_atual % xmax == 0:
-            new_x = xmax
+    def volume_mais(self):
+        if self.ligado:
+            if self.volume_atual != ControleRemoto.volume_max:
+                self.volume_atual += 1
+
+    def volume_menos(self):
+        if self.ligado:
+            if self.volume_atual != ControleRemoto.volume_min:
+                self.volume_atual -= 1
+
+    def mostrar_tv(self):
+        conteudo = ''
+        if not self.ligado:
+            conteudo = f":prohibited: [red]A TV está desligada[/]"
         else:
-            new_x = x_atual % xmax
-        return new_x
-
-    def toggle_ligar(self):
-        self.tv_ligada = not self.tv_ligada
-
-    def mudar_volume(self, botao):
-        if botao == "+" and self.vol_atual < self.vol_max:
-            self.vol_atual += 1
-        elif botao == "-" and self.vol_atual > 1:
-            self.vol_atual -= 1
-
-
-    def pressionar_botao(self, botao):
-        match botao:
-            case "@":
-                self.toggle_ligar()
-            case (">" | "<"):
-                self.mudar_canal(botao) if self.tv_ligada else None
-            case ("+" | "-"):
-                self.mudar_volume(botao) if self.tv_ligada else None
-            case _:
-                pass
-
-    def canal_selecionado(self):
-        canais = [
-            f"[on yellow]{c} [/]" if c == self.canal_atual else f"{c}"
-            for c in range(1, self.num_canais+1)
-        ]
-        canal_selecionado = " ".join(canais)
-        return canal_selecionado
-
-    def volume_selecionado(self):
-        volumes = [
-            "[on green] [/]" if vol <= self.vol_atual - 1 else "[on white] [/]" 
-            for vol in range(self.vol_max)
-            ]
-        return "".join(volumes)
-
-    
-    def display(self, largura = 35):
-        if self.tv_ligada:
-            message =  "CANAL  =  " + self.canal_selecionado()
-            message += "\nVOLUME = " + self.volume_selecionado()
-        else:
-            message = ":prohibited: [red]A TV está desligada [/]"
-        panel = Panel(message, title="[ TV ]", width=largura)
-        print(panel, end="\r", flush=True)
-        # return panel
+            conteudo = f"CANAL  = "
+            for canal in range(ControleRemoto.canal_min, ControleRemoto.canal_max + 1):
+                if canal == self.canal_atual:
+                    conteudo += f"[yellow on yellow] {canal} [/]"
+                else:
+                    conteudo += f" {canal}"
+            conteudo += "\nVOLUME = "
+            for volume in range(ControleRemoto.volume_min, ControleRemoto.volume_max + 1):
+                if volume <= self.volume_atual:
+                   conteudo += "[black on cyan] [/]" 
+                else:
+                   conteudo += "[black on white] [/]" 
+        tv = Panel(conteudo, title=" [ TV ]", width=40)
+        print(tv)
 
 c = ControleRemoto()
 
 while True:
-    c.display()
-    botao = input(f"< CH{c.canal_atual} >    -  VOL{c.vol_atual} + ")
-    if botao == "0":
-        break
-    else:
-        c.pressionar_botao(botao)
+    c.mostrar_tv()
+    comando = input(f"< CH{c.canal_atual} >   - VOL{c.volume_atual}+ ")
+
+    match comando:
+        case "0":
+            break
+        case "@":
+            c.liga_desliga()
+        case ">":
+            c.canal_mais()
+        case "<":
+            c.canal_menos()
+        case "-":
+            c.volume_menos()
+        case "+":
+            c.volume_mais()
