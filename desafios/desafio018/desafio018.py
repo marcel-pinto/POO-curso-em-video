@@ -9,28 +9,32 @@ class Churrasco:
         self.titulo = titulo
         self.convidados = convidados
 
+    def __str__(self):
+        return f"Esse é {self.titulo} com {self.convidados} pessoas participando"
+
+    def calcular_qtd_carne(self) -> float:
+        return self.convidados * Churrasco.consumo_padrao_kg
+
+    def calcular_custo_total(self) -> float:
+        return self.calcular_qtd_carne() * Churrasco.preco_carne_em_kg
+
+    def calcular_custo_individual(self) -> float:
+        return self.calcular_custo_total() / self.convidados
+
     def analisar(self, largura = 100):
         mensagem = f"Analisando [green]{self.titulo}[/] com [blue]{self.convidados} convidados[/]\n"
         mensagem += f"Cada participante comerá {self.__class__.consumo_padrao_kg}Kg e cada Kg custa R${self.__class__.preco_carne_em_kg:.2f}\n"
-
-        consumo_total_em_kg = self.__class__.consumo_padrao_kg * self.convidados
-
-        mensagem += f"Recomendo [blue]comprar {consumo_total_em_kg:.3f}Kg[/] de carne\n"
-
-        custo_total = consumo_total_em_kg * self.preco_carne_em_kg
-
-        mensagem += f"O custo total será de [green]R${custo_total:,.2f}[/]\n"
-
-        valor_por_pessoa = custo_total / self.convidados
-
-        mensagem += f"Cada pessoa pagará [yellow]R${valor_por_pessoa:,.2f}[/] para participar"
+        mensagem += f"Recomendo [blue]comprar {self.calcular_qtd_carne():.3f}Kg[/] de carne\n"
+        mensagem += f"O custo total será de [green]R${self.calcular_custo_total():,.2f}[/]\n"
+        mensagem += f"Cada pessoa pagará [yellow]R${self.calcular_custo_individual():,.2f}[/] para participar"
         panel = Panel(mensagem, title=self.titulo, width = largura)
         print(panel)
 
-c1 = Churrasco("Churras dos Amigos", 100)
+c1 = Churrasco("Churras dos Amigos", 15)
 c1.analisar()
 
-
+c2 = Churrasco("Festa do fim de ano", 80)
+c2.analisar()
 #CONSIDERE
 # Consumo padrão: 400g por pessoa
 # Preço: R$82.40/kg
