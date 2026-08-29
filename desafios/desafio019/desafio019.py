@@ -1,5 +1,6 @@
 from rich import print
 from time import sleep
+
 class Livro:
     tempo_passagem_pagina = 0.2
 
@@ -16,25 +17,25 @@ class Livro:
     def __str__(self):
         return f"Esse é o livro {self.titulo} com {self.paginas_totais} páginas. Você está na página {self.pagina_atual}."
 
-    def avancar_paginas(self, paginas):
-        for i in range(1, paginas+1):
-            if self.pagina_atual == self.paginas_totais:
-                break
-            self.pagina_atual += 1
-            sleep(Livro.tempo_passagem_pagina)
-            print(f"Pág {self.pagina_atual} :arrow_forward:", end=" ")
+    def avancar_paginas(self, paginas = 1):
+        cont = 0
+        for _ in range(paginas):
+            if not self.fim_do_livro():
+                self.pagina_atual += 1
+                print(f"Pág {self.pagina_atual} :arrow_forward:", end=" ")
+                sleep(Livro.tempo_passagem_pagina)
+                cont += 1
 
-        print(f"[blue]Você avançou {i} páginas e agora está na [yellow]página {self.pagina_atual}[/][/]")
+        print(f"[blue]Você avançou {cont} páginas e agora está na [yellow]página {self.pagina_atual}[/][/]")
 
+        if self.fim_do_livro():
+            print(f":closed_book:[red] Você chegou ao final do livro '{self.titulo}'[/]")
 
-
-        if self.pagina_atual == self.paginas_totais:
-            print(f":rotating_light:[red] Você chegou ao final do livro '{self.titulo}'[/]")
-
+    def fim_do_livro(self) -> bool:
+        return self.pagina_atual == self.paginas_totais
 
 
 l1 = Livro("10 coisas que aprendi", 20)
 l1.avancar_paginas(5)
 l1.avancar_paginas(10)
-l1.avancar_paginas(100)
-# print(l1)
+l1.avancar_paginas(50)
