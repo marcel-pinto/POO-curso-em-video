@@ -13,9 +13,9 @@ class Gamer:
         self.games_favoritos.append(game)
 
     def ficha(self):
-        mensagem = f"Nome real: [black on blue]{self.nome}[/]\n"
+        mensagem = f"Nome real: [black on blue] {self.nome} [/]\n"
         mensagem += "Jogos Favoritos:\n"
-        parsed_games = [f":video_game: [blue]{game}[/]" for game in sorted(self.games_favoritos)]
+        parsed_games = [f":video_game: [blue]{game}[/]" for game in sorted(self.games_favoritos, key=str.lower)]
 
         jogos_favoritos = "\n".join(parsed_games)
         mensagem += jogos_favoritos
