@@ -1,21 +1,13 @@
-from transportes import Moto, Caminhao, Drone
-from rich import print
-from rich.table import Table
+from funcionarios import Horista, Mensalista
 
 def main():
-    dist = 100
+    f1 = Horista(nome = "Paulo", valor_hora = 12, horas_trab= 200)
+    f1.calcular_salario()
+    f1.analisar_salario()
 
-    viagem = [Moto(dist), Caminhao(dist), Drone(dist)]
-
-    tabela = Table(title = "Tabela de Fretes")
-
-    for column in ("Distancia", "Tipo", "Frete"):
-        tabela.add_column(column)
-
-    for entrega in viagem:
-        tabela.add_row(f"{dist}Km", type(entrega).__name__, entrega.calc_frete())
-
-    print(tabela)
-
+    f2 = Mensalista(nome = "Amanda", salario_bruto=9500)
+    f2.calcular_salario()
+    f2.analisar_salario()
+    
 if __name__ == "__main__":
     main()
