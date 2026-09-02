@@ -10,5 +10,7 @@ def main():
     p2.atacar(p1, forca=20000)
     p1.curar()
 
+    p1.status()
+    p2.status()
 if __name__ == "__main__":
     main()
