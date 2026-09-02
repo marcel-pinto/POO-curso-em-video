@@ -16,7 +16,7 @@ class Funcionario(ABC):
         pass
 
     def analisar_salario(self):
-        mensagem = f"O salário de [blue]{self.nome}[/] ([purple]{type(self).__name__}[/]) é de [green]R${self.salario:,.2f}[/] e corresponde a [yellow]{self.salario/Funcionario.sal_min:.1f} salários mínimos[/]."
+        mensagem = f"O salário de [blue]{self.nome}[/] ([purple]{self.__class__.__name__}[/]) é de [green]R${self.salario:,.2f}[/] e corresponde a [yellow]{self.salario/Funcionario.sal_min:.1f} salários mínimos[/]."
         panel = Panel(mensagem,title="Análise de Salário", width=40)
         print(panel)
 
