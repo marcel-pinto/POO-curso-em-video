@@ -1,4 +1,4 @@
-from desafios.desafio025.transportes import Moto, Caminhao, Drone
+from transportes import Moto, Caminhao, Drone
 from rich import print
 from rich.table import Table
 
