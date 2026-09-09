@@ -3,8 +3,11 @@ from rich import inspect
 
 def main():
     t = Termostato()
-    t.temperatura = 17.3
-    inspect(t, private=True, methods=True)
+    try:
+        t.temperatura = 25.2
+    except Exception as erro:
+        print(f"Houve um problema: {erro}")
 
+    print(f"A temperatura atual é {t.ftemperatura}.")
 if __name__ == "__main__":
     main()
