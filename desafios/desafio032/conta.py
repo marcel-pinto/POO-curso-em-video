@@ -2,7 +2,7 @@ from getpass import getpass
 from hashlib import sha256
 
 class ContaBancaria:
-    def __init__(self, id, nome, saldo, chave = None):
+    def __init__(self, id:int, nome:str = None, saldo:float = 0., chave:str = None):
         self._id = id
         self._titular = nome
         self.__saldo = saldo
@@ -13,6 +13,9 @@ class ContaBancaria:
         self.__hash = sha256(chave.encode("utf-8")).hexdigest()
         print(f"Conta {id} foi criada com sucesso. Saldo atual R${saldo:,.2f}.")
 
+    def __str__(self):
+        return f"Estado atual da conta: {self.__dict__}"
+    
     @property
     def nome(self):
         return self._titular
@@ -32,7 +35,12 @@ class ContaBancaria:
             return False
 
     def pede_senha(self):
-        return getpass("Senha: ")
+
+        while True:
+            senha = getpass("Senha: ")
+            if len(senha) >= 6:
+                break
+        return senha
 
     def sacar(self, valor, chave = None):
         if valor <= 0:
