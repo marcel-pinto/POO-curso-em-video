@@ -1,14 +1,16 @@
 from retangulo import Retangulo
 from rich import inspect
 def main():
-    r = Retangulo()
-    r.base = 4
-    r.altura = 5
 
-    r.medidas = (4,5)
+    r = Retangulo(7, 4)
+    try:
+        r.base = 12
+        r.altura=7
+        r.medidas=(8,12)
+    except Exception as error:
+        print(f"Ocorreu um erro do tipo {type(error).__name__}: {error}")
+
     print(r.medidas)
-    inspect(r, private=True)
-
 
 if __name__ == "__main__":
     main()
