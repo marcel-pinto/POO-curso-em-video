@@ -9,13 +9,17 @@ class Credencial:
         return self.__hash_senha
 
     @senha.setter
-    def senha(self, valor):
-        self.__hash_senha = sha256(valor.encode()).hexdigest()
-
+    def senha(self, chave):
+        if len(chave) > 0:
+            self.__hash_senha = sha256(chave.encode("utf-8")).hexdigest()
+        else:
+            raise ValueError("A senha precisa ter pelo menos 1 caractere")
     def validar(self, senha):
-        hash = sha256(senha.encode()).hexdigest()
+        hash = sha256(senha.encode("utf-8")).hexdigest()
 
         if hash == self.__hash_senha:
             print("[green]Senha correta![/]")
+            return True
         else:
             print("[red]Senha incorreta![/]")
+            return False
