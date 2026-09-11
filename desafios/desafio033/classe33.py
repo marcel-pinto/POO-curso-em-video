@@ -1,8 +1,8 @@
 from abc import ABC
 from datetime import datetime
 
-class Pessoa:
-    def __init__(self, nome, nascimento):
+class Pessoa(ABC):
+    def __init__(self, nome:str, nascimento:int):
         self._nome = nome
         self._nascimento = None
         self.nascimento = nascimento
@@ -14,10 +14,10 @@ class Pessoa:
     @nascimento.setter
     def nascimento(self, ano):
         hoje = datetime.today().year
-        if ano > hoje or ano < 2000:
-            raise ValueError(f"Ano {ano} é inválido.")
-        else:
+        if 2000 <= ano <= hoje:
             self._nascimento = ano
+        else:
+            raise ValueError(f"Ano {ano} é inválido.")
 
     @property
     def idade(self):
@@ -29,10 +29,11 @@ class Pessoa:
         raise PermissionError("Você não pode alterar a idade. Mude o ano do nascimento")
 
 class Aluno(Pessoa):
-    def __init__(self, nome, nascimento, curso):
+    cursos_oficiais = ["ADS", "ADM", "ENG", "CONT"]
+
+    def __init__(self, nome:str, nascimento:int, curso:str):
         super().__init__(nome, nascimento)
         self._curso = None
-        self.cursos_oficiais = ["ADS", "ADM", "ENG", "CONT"]
         self.curso = curso
 
     @property
@@ -41,14 +42,17 @@ class Aluno(Pessoa):
 
     @curso.setter
     def curso(self, nome_curso):
-        if nome_curso in self.cursos_oficiais:
+        if nome_curso in Aluno.cursos_oficiais:
             self._curso = nome_curso
         else:
             raise ValueError(f"O curso {nome_curso} não está na lista de cursos oficiais.")
 
     def add_curso(self, curso:str):
+        curso = curso.strip().upper()
         if len(curso) < 3 or len(curso) > 5:
             raise ValueError("O nome do curso deve possuir de 3 a 5 caracteres.")
-        else:
-            self.cursos_oficiais.append(curso.upper())
+
+        if curso in Aluno.cursos_oficiais:
+            raise ValueError(f"O curso {curso} já está na lista de cursos oficiais.")
+        Aluno.cursos_oficiais.append(curso)
 

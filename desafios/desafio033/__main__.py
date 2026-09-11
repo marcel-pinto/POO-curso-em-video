@@ -4,7 +4,7 @@ from rich import inspect
 def main():
     a1 = Aluno(nome="Maria", nascimento= 2000, curso="ADS")
 
-    a1.nascimento = 2000
+    a1.nascimento = 2001
     a1.add_curso("MODA")
     a1.curso = "MODA"
 
