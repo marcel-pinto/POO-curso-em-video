@@ -1,7 +1,7 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 class Funcionario(ABC):
-    def __init__(self, nome, salario):
+    def __init__(self, nome:str = "", salario:float = 1_621.):
         self.nome = nome
         self.__salario = salario
 
@@ -10,12 +10,13 @@ class Funcionario(ABC):
         return self.__salario
 
     @salario.setter
-    def salario(self, novo_salario):
-        if novo_salario > self.salario:
+    def salario(self, novo_salario:float):
+        if novo_salario >= self.salario:
             self.__salario = novo_salario
         else:
             raise ValueError("Você não pode reduzir o salário de um funcionário.")
 
+    @abstractmethod
     def calcular_bonus(self):
         pass
 
@@ -24,24 +25,15 @@ class Funcionario(ABC):
 
 class Designer(Funcionario):
     bonus = 0.08
-    def __init__(self, nome, salario):
-        super().__init__(nome, salario)
-
     def calcular_bonus(self):
         return self.salario * Designer.bonus
 
 class Gerente(Funcionario):
     bonus = 0.15
-    def __init__(self, nome, salario):
-        super().__init__(nome, salario)
-
     def calcular_bonus(self):
         return self.salario * Gerente.bonus
 
 class Desenvolvedor(Funcionario):
     bonus = 0.10
-    def __init__(self, nome, salario):
-        super().__init__(nome, salario)
-
     def calcular_bonus(self):
         return self.salario * Desenvolvedor.bonus
