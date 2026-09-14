@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 import locale
 
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
@@ -22,37 +22,39 @@ class Pagamento(ABC):
     def fvalor(self):
         return locale.currency(self._valor, grouping=True)
 
+    @abstractmethod
     def pagar(self):
         pass
 
 
 class Boleto(Pagamento):
-    def __init__(self):
-        super().__init__()
-
-    def pagar(self):
-        if self.valor:
+    def pagar(self, valor:float):
+        try:
+            self.valor = valor
+            # ... Codigo pagamento....
             print(f"Pagamento CONFIRMADO de {self.fvalor} via Boleto")
+        except Exception as e:
+            print(f"Falha no pagamento de {self.fvalor} via Boleto.")
 
 
 class PIX(Pagamento):
-    def __init__(self):
-        super().__init__()
-
-    def pagar(self):
-        if self.valor:
+    def pagar(self, valor:float):
+        try:
+            self.valor = valor
+                # ... Codigo pagamento....
             print(f"Pagamento CONFIRMADO de {self.fvalor} via Pix")
-
+        except Exception as e:
+            print(f"Falha no pagamento de {self.fvalor} via Pix.")
 
 
 class Credito(Pagamento):
-    def __init__(self):
-        super().__init__()
-
-    def pagar(self):
-        if self.valor:
+    def pagar(self, valor:float):
+        try:
+            self.valor = valor
+            # ... Codigo pagamento....
             print(f"Pagamento CONFIRMADO de {self.fvalor} via Cartão de Crédito")
+        except Exception as e:
+            print(f"Falha no pagamento de {self.fvalor} via Cartão de Crédito.")
 
-def finalizar_compra(pagamento, valor):
-    pagamento.valor = valor
-    pagamento.pagar()
+def finalizar_compra(pagamento: Pagamento, valor: float):
+    pagamento.pagar(valor)
