@@ -1,7 +1,9 @@
 from mensagens import *
 
 def main():
-    Erro("Olá Gafanhoto").mostrar()
+    Mensagem("Olá Gafanhoto").mostrar()
+    Alerta("Alertando a todos...").mostrar()
+    Erro("Deu ruim ...").mostrar()
 
 if __name__ == "__main__":
     main()
