@@ -3,7 +3,7 @@ import re
 
 class Validador(ABC):
     @abstractmethod
-    def validar(self, valor):
+    def validar(self, valor:str) -> bool:
         pass
 
 # Requerimentos Usuario
@@ -12,7 +12,7 @@ class Validador(ABC):
 # - numeros
 # - Simbolo de sublinhado
 class Usuario(Validador):
-    def validar(self, valor):
+    def validar(self, valor:str) -> bool:
         pattern = r"^[a-z0-9_]{5,20}$"
         return re.fullmatch(pattern, valor)
 
@@ -21,7 +21,7 @@ class Usuario(Validador):
 # os dominios contem pontos
 # o top level domain encerra com ponto e pelo menos 2 letras
 class Email(Validador):
-    def validar(self, valor):
+    def validar(self, valor:str) -> bool:
         pattern = r"^[^@\s]+@[^@\s.]+(?:\.[^@\s.]+)*\.[A-Za-z]{2,}\.[A-Za-z]{2,}$"
         return re.fullmatch(pattern, valor)
 
@@ -30,10 +30,10 @@ class Email(Validador):
 # - Pelo menos uma maiuscula
 # - Pelo menos um simbolo
 class Senha(Validador):
-    def validar(self, valor):
+    def validar(self, valor:str) -> bool:
         pattern = r"^(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$"
         return re.fullmatch(pattern, valor)
 
 
-def validar_dado(dado, valor):
-    print(f"Valor: {valor} é válido? {'SIM' if dado.validar(valor) else 'NÃO'}")
+def validar_dado(validador, valor):
+    print(f"Valor: {valor} é válido? {'SIM' if validador.validar(valor) else 'NÃO'}")
