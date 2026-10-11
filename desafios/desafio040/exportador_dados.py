@@ -40,8 +40,8 @@ class XML:
             for key, value in dado.__dict__.items():
                 ET.SubElement(user, key).text = str(value)
 
-        ET.indent(root, space=" " * 4)
-        return ET.tostring(root,  encoding="unicode")
+        ET.indent(root, space="\t")
+        return ET.tostring(root,  encoding="unicode", xml_declaration=True)
 
 
 def exportar_dados(tipo, dados):

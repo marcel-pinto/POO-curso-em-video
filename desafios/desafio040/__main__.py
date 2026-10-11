@@ -12,7 +12,7 @@ def main():
         Aluno("Mario", "SEG", "1 per")
     ]
     # exportar_dados(XML(), Usuario('Pedro', "pedro@gmail.com"))
-    exportar_dados(JSON(), u)
-    exportar_dados(JSON(), a)
+    exportar_dados(XML(), u)
+    exportar_dados(XML(), a)
 if __name__ == '__main__':
     main()
